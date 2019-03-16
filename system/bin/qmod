@@ -1,0 +1,140 @@
+#!/system/bin/sh
+
+darkmode () {
+	clear
+	echo "*********************************************"
+	echo "Android Q's darkmode is hidden..."
+	echo "Choices: [enable, disable, auto]"
+	echo "Type home to go back to the menu"
+	echo "Please indicate your choice:"
+	read INPUT_DARK
+	echo "********************************************"
+	case "$INPUT_DARK" in 
+	  *enable*)
+		settings put secure uinightmode 2
+		echo "Enabled dark theming"
+		echo "Would you like to force apps to use darkmode?"
+		echo "Please enter yes or no"
+		read INPUT_APP
+		case "$INPUT_APP" in
+		  *yes* | *Yes*)
+			echo "Done. Please reboot"
+			sleep 2
+			echo "Returning to main menu..."
+		  	sleep 5
+			main
+			;;
+		  *)
+			echo "Not applying"
+			echo "Returning to main menu..."
+			sleep 5
+			main
+			;;
+		esac
+		;;
+	  *disable*)
+		settings put secure uinightmode 1
+		echo "Disabled dark theming"
+		echo "Please reboot in menu"
+		echo "Taking you to menu..."
+		sleep 5
+		main
+		;;
+	  *auto*)
+		settings put secure uinightmode 0
+		echo "Set dark theme to change for time of day"
+		echo "Please reboot in menu"
+		echo "Taking you to menu..."
+		sleep 5
+		main
+		;;
+	  *home*)
+		echo "Going back to menu..."
+		sleep 5
+		main
+		;;
+	  *)
+		echo "This is not a valid choice"
+		darkmode
+		;;
+	esac
+}
+
+navbar () {
+	clear
+	echo "*********************************************"
+	echo "Android Q has new navigation gestures..."
+	echo "Choices: [noback, nobackwq, reset]"
+	echo "Please indicate your choice:"
+	read NAV_INPUT
+	echo "********************************************"
+	case "$NAV_INPUT" in 
+	  *noback*)
+		settings put global quickstepcontroller_hideback 1
+		settings put global quickstepcontroller_gesture_match_map 173255
+		echo "Enabled new back gesture with Pie recent switcher"
+		echo "Please reboot in menu"
+		echo "Taking you to menu..."
+		sleep 5
+		main
+		;;
+	  *nobackwq*)
+		settings put global quickstepcontroller_gesture_match_map 173155
+		echo "Enabled new back gesture with Q recent switcher"
+		echo "Please reboot in menu"
+		echo "Taking you to menu..."
+		sleep 5
+		main
+		;;
+	  *reset*)
+		settings delete global quickstepcontroller_gesture_match_map
+		echo "Reverted back to normal"
+		echo "Please reboot in menu"
+		echo "Taking you to menu..."
+		sleep 5
+		main
+		;;
+	  *)
+		echo "This is not a valid choice"
+		navbar
+		;;
+	esac
+}
+
+main () {
+	echo "**************************************"
+	echo       "Android Q extra tweaks"
+	echo            "by: kingbri"
+	echo "These are a collection of tweaks that"
+	echo     "are hidden from android Q"
+	echo " "
+	echo "Options are: [darkmode, navbar]"
+	echo "Please select an option:"
+	read OPTION
+	echo "You have selected $OPTION, redirecting..."
+	echo "***************************************"
+
+	case "$OPTION" in 
+  	  *darkmode*)
+		darkmode
+		;;
+  	  *navbar*)
+		navbar
+		;;
+	  *reboot*)
+		echo "If you are not root, please reboot manually because this script is exiting"
+		reboot
+		exit 0
+		;;
+	  *exit*)
+		echo "Exiting"
+		exit 0
+		;;
+  	  *)
+		echo "Not an option... Please try again"
+		main
+		;;
+	esac
+}
+
+main
