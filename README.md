@@ -1,7 +1,12 @@
-# Magisk Module Template
+# Android Q modifications
+This enables hidden settings in android Q in the form of an executable script
 
-**Update `README.md` if you want to submit your module to the online repo!** This `README.md` will be shown in a Webview dialog when a user taps your module in Magisk Manager, so make sure to place some information / changelog / notes here.
+## How to Use?
+Open a terminal app and su or adb shell and run "qmod"
 
-If you are not familiar with the Markdown syntax, you can start by experimenting on GitHub's online Markdown editor, which will let you preview before publishing. If you need more help, the [Markdown Cheat Sheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) will be handy.
+## What features are listed?
+Currently there is dark theming and the new navbar gestures. More information in the script
 
-For more information about modules and repos, please check the [official documentation](https://topjohnwu.github.io/Magisk/)
+## Compatibility
+* Android Q+
+

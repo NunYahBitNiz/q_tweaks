@@ -41,7 +41,8 @@ LATESTARTSERVICE=false
 
 print_modname() {
   ui_print "*******************************"
-  ui_print "     Magisk Module Template    "
+  ui_print "    Android Q Modifications    "
+  ui_print "	      by kingbri           "
   ui_print "*******************************"
 }
 
@@ -85,6 +86,7 @@ set_permissions() {
 
   # The following is default permissions, DO NOT remove
   set_perm_recursive  $MODPATH  0  0  0755  0644
+  set_perm $MODPATH/system/bin/qmod 0 0 0777
 }
 
 ##########################################################################################
