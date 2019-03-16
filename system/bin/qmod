@@ -5,6 +5,11 @@ darkmode () {
 	echo "*********************************************"
 	echo "Android Q's darkmode is hidden..."
 	echo "Choices: [enable, disable, auto]"
+	echo " "
+	echo "Enable: Enables system-wide dark mode"
+	echo "Disable: Disables system-wide dark mode"
+	echo "Auto: Automatic based on time of day"
+	echo " "
 	echo "Type home to go back to the menu"
 	echo "Please indicate your choice:"
 	read INPUT_DARK
@@ -21,13 +26,13 @@ darkmode () {
 			echo "Done. Please reboot"
 			sleep 2
 			echo "Returning to main menu..."
-		  	sleep 5
+		  	sleep 3
 			main
 			;;
 		  *)
 			echo "Not applying"
 			echo "Returning to main menu..."
-			sleep 5
+			sleep 3
 			main
 			;;
 		esac
@@ -37,7 +42,7 @@ darkmode () {
 		echo "Disabled dark theming"
 		echo "Please reboot in menu"
 		echo "Taking you to menu..."
-		sleep 5
+		sleep 3
 		main
 		;;
 	  *auto*)
@@ -45,12 +50,12 @@ darkmode () {
 		echo "Set dark theme to change for time of day"
 		echo "Please reboot in menu"
 		echo "Taking you to menu..."
-		sleep 5
+		sleep 3
 		main
 		;;
 	  *home*)
 		echo "Going back to menu..."
-		sleep 5
+		sleep 3
 		main
 		;;
 	  *)
@@ -65,25 +70,35 @@ navbar () {
 	echo "*********************************************"
 	echo "Android Q has new navigation gestures..."
 	echo "Choices: [noback, nobackwq, reset]"
+	echo " "
+	echo "noback: removes back button, but uses pie quickswitching"
+	echo "nobackwq: removes back button and uses Q quickswitching"
+	echo "reset: reset to defaults"
+	echo " "
+	echo "type home to go back to the menu"
 	echo "Please indicate your choice:"
 	read NAV_INPUT
 	echo "********************************************"
 	case "$NAV_INPUT" in 
 	  *noback*)
+		"Removing back button, but keeping pie quick switching"
+		sleep 1
 		settings put global quickstepcontroller_hideback 1
 		settings put global quickstepcontroller_gesture_match_map 173255
 		echo "Enabled new back gesture with Pie recent switcher"
 		echo "Please reboot in menu"
 		echo "Taking you to menu..."
-		sleep 5
+		sleep 3
 		main
 		;;
 	  *nobackwq*)
+		"Removing back button and changing to Q quick switching"
+		sleep 1
 		settings put global quickstepcontroller_gesture_match_map 173155
 		echo "Enabled new back gesture with Q recent switcher"
 		echo "Please reboot in menu"
 		echo "Taking you to menu..."
-		sleep 5
+		sleep 3
 		main
 		;;
 	  *reset*)
@@ -91,7 +106,12 @@ navbar () {
 		echo "Reverted back to normal"
 		echo "Please reboot in menu"
 		echo "Taking you to menu..."
-		sleep 5
+		sleep 3
+		main
+		;;
+	  *home*)
+		echo "Going back to menu..."
+		sleep 3
 		main
 		;;
 	  *)
@@ -102,17 +122,17 @@ navbar () {
 }
 
 main () {
-	echo "**************************************"
+	echo "**********************************************"
 	echo       "Android Q extra tweaks"
 	echo            "by: kingbri"
 	echo "These are a collection of tweaks that"
 	echo     "are hidden from android Q"
 	echo " "
-	echo "Options are: [darkmode, navbar]"
+	echo "Options are: [darkmode, navbar, reboot, exit]"
 	echo "Please select an option:"
 	read OPTION
 	echo "You have selected $OPTION, redirecting..."
-	echo "***************************************"
+	echo "**********************************************"
 
 	case "$OPTION" in 
   	  *darkmode*)
