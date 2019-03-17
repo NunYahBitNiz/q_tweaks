@@ -26,10 +26,12 @@ darkmode () {
 		settings put secure ui_night_mode 2
 		echo "Enabled dark theming"
 		echo "Would you like to force apps to use darkmode?"
+		echo "ROOT ONLY"
 		echo "Please enter yes or no"
 		read INPUT_APP
 		case "$INPUT_APP" in
 		  *yes* | *Yes*)
+			setprop debug.hwui.force_dark true
 			echo "Done. Please reboot"
 			sleep 2
 			echo "Returning to main menu..."
