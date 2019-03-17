@@ -23,9 +23,49 @@ ui_print() { echo "$1"; }
 
 require_new_magisk() {
   ui_print "*******************************"
-  ui_print " Please install Magisk v17.0+! "
+  ui_print " Please install Magisk v18.0+! "
   ui_print "*******************************"
   exit 1
+}
+
+keytest() {
+  ui_print "** Vol Key Test **"
+  ui_print "** Press Vol UP **"
+  (/system/bin/getevent -lc 1 2>&1 | /system/bin/grep VOLUME | /system/bin/grep " DOWN" > $INSTALLER/events) || return 1
+  return 0
+}
+
+chooseport() {
+  #note from chainfire @xda-developers: getevent behaves weird when piped, and busybox grep likes that even less than toolbox/toybox grep
+  while true; do
+    /system/bin/getevent -lc 1 2>&1 | /system/bin/grep VOLUME | /system/bin/grep " DOWN" > $INSTALLER/events
+    if (`cat $INSTALLER/events 2>/dev/null | /system/bin/grep VOLUME >/dev/null`); then
+      break
+    fi
+  done
+  if (`cat $INSTALLER/events 2>/dev/null | /system/bin/grep VOLUMEUP >/dev/null`); then
+    return 0
+  else
+    return 1
+  fi
+}
+
+chooseportold() {
+  # Calling it first time detects previous input. Calling it second time will do what we want
+  $KEYCHECK
+  SEL=$?
+  if [ "$1" == "UP" ]; then
+    UP=$SEL
+  elif [ "$1" == "DOWN" ]; then
+    DOWN=$SEL
+  elif [ $SEL -eq $UP ]; then
+    return 0
+  elif [ $SEL -eq $DOWN ]; then
+    return 1
+  else
+    ui_print "**  Vol key not detected **"
+    abort "** Use name change method in TWRP **"
+  fi
 }
 
 ##########################################################################################
@@ -111,11 +151,6 @@ unzip -o "$ZIP" 'system/*' -d $MODPATH >&2
 # Remove placeholder
 rm -f $MODPATH/system/placeholder 2>/dev/null
 
-# Handle replace folders
-for TARGET in $REPLACE; do
-  mktouch $MODPATH$TARGET/.replace
-done
-
 # Auto Mount
 $AUTOMOUNT && touch $MODPATH/auto_mount
 
@@ -129,6 +164,47 @@ if $BOOTMODE; then
   mktouch /sbin/.core/img/$MODID/update
   cp -af $INSTALLER/module.prop /sbin/.core/img/$MODID/module.prop
 fi
+
+# Keycheck binary by someone755 @Github, idea for code below by Zappo @xda-developers
+KEYCHECK=$INSTALLER/common/keycheck
+chmod 755 $KEYCHECK
+
+ui_print " "
+if keytest; then
+    FUNCTION=chooseport
+else
+    FUNCTION=chooseportold
+    ui_print "** Volume button programming **"
+    ui_print " "
+    ui_print "** Press Vol UP again **"
+    $FUNCTION "UP"
+    ui_print "**  Press Vol DOWN **"
+    $FUNCTION "DOWN"
+fi
+ui_print "This is an option to enable iphone-like gestures on Q"
+ui_print "This is being done in the module because Q doesn't"
+ui_print "allow for mounting on /system"
+ui_print "This replaces your current pixel launcher with a debug version"
+ui_print "Please indicate whether you want it"
+ui_print " "
+ui_print "   Vol(+) = Yes"
+ui_print "   Vol(-) = No"
+ui_print " "
+if $FUNCTION; then
+    ui_print "Adding iphone-like gestures..."
+    ui_print " "
+    # Handle replace folders
+    for TARGET in $REPLACE; do
+  	mktouch $MODPATH$TARGET/.replace
+    done
+    ui_print "Done. Remove/reinstall the module if you don't like these"
+    ui_print "To enable them, long-press on home screen and select settings/developer options"
+    ui_print "Then enable all the flags"
+    ui_print " "
+else
+    ui_print "Skipping iphone-like gestures..."
+    ui_print " "
+fi;
 
 # post-fs-data mode scripts
 $POSTFSDATA && cp -af $INSTALLER/common/post-fs-data.sh $MODPATH/post-fs-data.sh

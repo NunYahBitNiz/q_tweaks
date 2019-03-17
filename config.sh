@@ -63,7 +63,8 @@ REPLACE="
 
 # Construct your own list here, it will override the example above
 # !DO NOT! remove this if you don't need to replace anything, leave it empty as it is now
-REPLACE="
+REPLACE=
+/system/product/priv-app/NexusLauncherRelease"
 "
 
 ##########################################################################################

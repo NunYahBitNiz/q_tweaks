@@ -79,6 +79,9 @@ navbar () {
 	clear
 	echo "*********************************************"
 	echo "Android Q has new navigation gestures..."
+	echo "iphone style gestures were chosen during installation"
+	echo "If you enabled them, don't do anything here"
+	echo " "
 	echo "Choices: [1, 2, reset]"
 	echo " "
 	echo "1. Removes back button, but uses pie quickswitching"
@@ -91,7 +94,7 @@ navbar () {
 	echo "********************************************"
 	case "$NAV_INPUT" in 
 	  *1*)
-		"Removing back button, but keeping pie quick switching"
+		echo "Removing back button, but keeping pie quick switching"
 		sleep 1
 		settings put global quickstepcontroller_hideback 1
 		settings put global quickstepcontroller_gesture_match_map 173255
@@ -102,7 +105,7 @@ navbar () {
 		main
 		;;
 	  *2*)
-		"Removing back button and changing to Q quick switching"
+		echo "Removing back button and changing to Q quick switching"
 		sleep 1
 		settings put global quickstepcontroller_gesture_match_map 173155
 		echo "Enabled new back gesture with Q recent switcher"
@@ -112,6 +115,7 @@ navbar () {
 		main
 		;;
 	  *reset*)
+		adb shell settings put global quickstepcontroller_hideback 0
 		settings delete global quickstepcontroller_gesture_match_map
 		echo "Reverted back to normal"
 		echo "Please reboot in menu"
