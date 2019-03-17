@@ -243,7 +243,7 @@ bubbs() {
 	  *1*)
 		settings put secure experiment_enable_bubbles 1
 		settings put secure experiment_autobubble_all 1
-		"Enabled bubbles. Please reboot."
+		echo "Enabled bubbles. Please reboot."
 		echo "Taking you to menu..."
 		sleep 3
 		main
