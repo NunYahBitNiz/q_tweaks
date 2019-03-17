@@ -1,22 +1,29 @@
 #!/system/bin/sh
 
+#Qmod tweaks (c) kingbri. Enables hidden Android Q settings for people who are on Android Q. This does not enable Q settings for P users
+#Non-root: push this script to your sdcard. Enter a PC adb shell. cd to sdcard. Chmod 0775 /sdcard/qmod. Type "sh qmod"
+#Root: Install the magisk module. Open your terminal client. Type su. Type qmod
+
+#Functions (This script is function based)
+
+#Enable dark theming
 darkmode () {
 	clear
 	echo "*********************************************"
 	echo "Android Q's darkmode is hidden..."
-	echo "Choices: [enable, disable, auto]"
+	echo "Choices: [1, 2, 3]"
 	echo " "
-	echo "Enable: Enables system-wide dark mode"
-	echo "Disable: Disables system-wide dark mode"
-	echo "Auto: Automatic based on time of day"
+	echo "1. Enable: Enables system-wide dark mode"
+	echo "2. Disable: Disables system-wide dark mode"
+	echo "3. Auto: Automatic based on time of day"
 	echo " "
 	echo "Type home to go back to the menu"
 	echo "Please indicate your choice:"
 	read INPUT_DARK
 	echo "********************************************"
 	case "$INPUT_DARK" in 
-	  *enable*)
-		settings put secure uinightmode 2
+	  *1*)
+		settings put secure ui_night_mode 2
 		echo "Enabled dark theming"
 		echo "Would you like to force apps to use darkmode?"
 		echo "Please enter yes or no"
@@ -37,16 +44,16 @@ darkmode () {
 			;;
 		esac
 		;;
-	  *disable*)
-		settings put secure uinightmode 1
+	  *2*)
+		settings put secure ui_night_mode 1
 		echo "Disabled dark theming"
 		echo "Please reboot in menu"
 		echo "Taking you to menu..."
 		sleep 3
 		main
 		;;
-	  *auto*)
-		settings put secure uinightmode 0
+	  *3*)
+		settings put secure ui_night_mode 0
 		echo "Set dark theme to change for time of day"
 		echo "Please reboot in menu"
 		echo "Taking you to menu..."
@@ -65,22 +72,23 @@ darkmode () {
 	esac
 }
 
+#Navbar Options
 navbar () {
 	clear
 	echo "*********************************************"
 	echo "Android Q has new navigation gestures..."
-	echo "Choices: [noback, nobackwq, reset]"
+	echo "Choices: [1, 2, reset]"
 	echo " "
-	echo "noback: removes back button, but uses pie quickswitching"
-	echo "nobackwq: removes back button and uses Q quickswitching"
-	echo "reset: reset to defaults"
+	echo "1. Removes back button, but uses pie quickswitching"
+	echo "2. Removes back button and uses Q quickswitching"
+	echo "reset: reset to default"
 	echo " "
 	echo "type home to go back to the menu"
 	echo "Please indicate your choice:"
 	read NAV_INPUT
 	echo "********************************************"
 	case "$NAV_INPUT" in 
-	  *noback*)
+	  *1*)
 		"Removing back button, but keeping pie quick switching"
 		sleep 1
 		settings put global quickstepcontroller_hideback 1
@@ -91,7 +99,7 @@ navbar () {
 		sleep 3
 		main
 		;;
-	  *nobackwq*)
+	  *2*)
 		"Removing back button and changing to Q quick switching"
 		sleep 1
 		settings put global quickstepcontroller_gesture_match_map 173155
@@ -121,6 +129,140 @@ navbar () {
 	esac
 }
 
+#Lockscreen Clock options
+lockclock () {
+	clear
+	echo "*********************************************"
+	echo "Android Q has new Lockscreen Clocks..."
+	echo "Choices: [1, 2, 3, reset]"
+	echo " "
+	echo "1. Bubble style"
+	echo "2. stretched out analog"
+	echo "3. Clock in words"
+	echo "reset: reset to defaults"
+	echo " "
+	echo "type home to go back to the menu"
+	echo "Please indicate your choice:"
+	read CLK_INPUT
+	echo "********************************************"
+	case "$CLK_INPUT" in
+	  *1*)
+		settings put secure lock_screen_custom_clock_face "com.android.keyguard.clock.BubbleClockController"
+		echo "Enabled bubble clock"
+		echo "Please reboot in menu"
+		echo "Taking you to menu..."
+		sleep 3
+		main
+		;;
+	  *2*)
+		settings put secure lock_screen_custom_clock_face "com.android.keyguard.clock.StretchAnalogClockController"
+		echo "Enabled analog clock"
+		echo "Please reboot in menu"
+		echo "Taking you to menu..."
+		sleep 3
+		main
+		;;
+	  *3*)
+		settings put secure lock_screen_custom_clock_face "com.android.keyguard.clock.TypeClockController"
+		echo "Enabled word clock"
+		echo "Please reboot in menu"
+		echo "Taking you to menu..."
+		sleep 3
+		main
+		;;
+	  *reset*)
+		settings delete secure lock_screen_custom_clock_face
+		echo "Reset to default"
+		echo "Please reboot in menu"
+		echo "Taking you to menu..."
+		sleep 3
+		main
+		;;
+	  *home*)
+		echo "Going back to menu..."
+		sleep 3
+		main
+		;;
+	  *)
+		echo "This is not an option"
+		lockclock
+		;;
+	esac
+}
+
+#Movable windows (On Pixel Launcher only)
+desktop () {
+	clear
+	echo "*********************************************"
+	echo "Android Q has a desktop mode..."
+	echo "Please enable the force desktop mode setting in settings"
+	echo "Choices: [1]"
+	echo " "
+	echo "1. Execute enabler"
+	echo "To reset, turn off the force desktop mode setting"
+	echo " "
+	echo "type home to go back to the menu"
+	echo "Please indicate your choice:"
+	read DESK_INPUT
+	echo "********************************************"
+	case "$DESK_INPUT" in	
+	  *1*)
+		am start -n "com.google.android.apps.nexuslauncher/com.android.launcher3.SecondaryDisplayLauncher"
+		echo "Enabled. Please relaunch your launcher."
+		echo "Taking you to menu..."
+		sleep 3
+		main
+		;;
+	  *home*)
+		echo "Going back to menu..."
+		sleep 3
+		main
+		;;
+	  *)
+		echo "This is not a valid choice"
+		desktop
+		;;
+	esac
+}
+
+#Chat bubbles
+bubbs() {
+	clear
+	echo "*********************************************"
+	echo "Android Q has movable chat bubbles..."
+	echo "Choices: [1, reset]"
+	echo " "
+	echo "1. Execute enabler"
+	echo "reset: reset to defaults"
+	echo " "
+	echo "type home to go back to the menu"
+	echo "Please indicate your choice:"
+	read BUBB_INPUT
+	echo "********************************************"
+	case "$BUBB_INPUT" in
+	  *1*)
+		settings put secure experiment_enable_bubbles 1
+		settings put secure experiment_autobubble_all 1
+		"Enabled bubbles. Please reboot."
+		echo "Taking you to menu..."
+		sleep 3
+		main
+		;;
+	  *reset*)
+		settings delete secure experiment_enable_bubbles
+		settings delete secure experiment_autobubble_all
+		"Reset to default. Please reboot."
+		echo "Taking you to menu..."
+		sleep 3
+		main
+		;;
+	  *)
+		echo "This is not a valid choice"
+		bubbs
+	esac
+}
+			
+#Main menu
 main () {
 	echo "**********************************************"
 	echo       "Android Q extra tweaks"
@@ -129,17 +271,35 @@ main () {
 	echo     "are hidden from android Q"
 	echo " "
 	echo "Options are: [darkmode, navbar, reboot, exit]"
+	echo "1. Dark Theme options"
+	echo "2. Navbar options"
+	echo "3. Lockscreen Clocks"
+	echo "4. Desktop enabler"
+	echo "5. Chat Bubbles"
+	echo "reboot: reboot system"
+	echo "exit: quit this script"
 	echo "Please select an option:"
 	read OPTION
-	echo "You have selected $OPTION, redirecting..."
-	echo "**********************************************"
-
 	case "$OPTION" in 
-  	  *darkmode*)
+  	  *1*)
 		darkmode
+		OPTION="Dark Theming"
 		;;
-  	  *navbar*)
+  	  *2*)
 		navbar
+		OPTION="Navbar Tweaks"
+		;;
+	  *3*)
+		lockclock
+		OPTION="Lockscreen Clocks"
+		;;
+	  *4*) 
+		desktop
+		OPTION="Desktop Enabler"
+		;;
+	  *5*)
+		bubbs
+		OPTION="Chat Bubbles"
 		;;
 	  *reboot*)
 		echo "If you are not root, please reboot manually because this script is exiting"
@@ -154,7 +314,10 @@ main () {
 		echo "Not an option... Please try again"
 		main
 		;;
-	esac
+	esac	
+	echo "You have selected $OPTION, redirecting..."
+	echo "**********************************************"
 }
 
+#Function call to start the script
 main
