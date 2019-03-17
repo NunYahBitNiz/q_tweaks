@@ -253,7 +253,7 @@ bubbs() {
 	  *reset*)
 		settings delete secure experiment_enable_bubbles
 		settings delete secure experiment_autobubble_all
-		"Reset to default. Please reboot."
+		echo "Reset to default. Please reboot."
 		echo "Taking you to menu..."
 		sleep 3
 		main
