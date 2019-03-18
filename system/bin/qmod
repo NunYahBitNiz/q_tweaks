@@ -116,7 +116,7 @@ navbar () {
 		main
 		;;
 	  *reset*)
-		adb shell settings put global quickstepcontroller_hideback 0
+		settings put global quickstepcontroller_hideback 0
 		settings delete global quickstepcontroller_gesture_match_map
 		echo "Reverted back to normal"
 		echo "Please reboot in menu"
