@@ -107,6 +107,7 @@ navbar () {
 	  *2*)
 		echo "Removing back button and changing to Q quick switching"
 		sleep 1
+		settings put global quickstepcontroller_hideback 1
 		settings put global quickstepcontroller_gesture_match_map 173155
 		echo "Enabled new back gesture with Q recent switcher"
 		echo "Please reboot in menu"
