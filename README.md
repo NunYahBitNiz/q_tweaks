@@ -18,7 +18,7 @@ More information is in the script itself
 Root: Just type qmod in a terminal (preferably su)
 
 Non-root (in an adb shell): 
--chmod 0777 /sdcard/qmod
--sh /sdcard/qmod
+* chmod 0777 /sdcard/qmod
+* sh /sdcard/qmod
 
 
