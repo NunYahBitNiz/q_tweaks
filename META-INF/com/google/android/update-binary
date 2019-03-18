@@ -198,8 +198,11 @@ if $FUNCTION; then
   	mktouch $MODPATH$TARGET/.replace
     done
     ui_print "Done. Remove/reinstall the module if you don't like these"
-    ui_print "To enable them, long-press on home screen and select settings/developer options"
-    ui_print "Then enable all the flags"
+    ui_print "To enable them, long-press on home screen and"
+    ui_print "select settings/developer options"
+    ui_print "Then enable the flags:"
+    ui_print "  QUICK_SWITCH and SWIPE_HOME"
+    ui_print "Press apply and you're good"
     ui_print " "
 else
     ui_print "Skipping iphone-like gestures..."

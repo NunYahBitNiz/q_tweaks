@@ -115,6 +115,19 @@ navbar () {
 		sleep 3
 		main
 		;;
+	  *3*)
+   		echo "To enable the iphone-like gestures:"
+		echo "long-press on home screen and"
+    		echo "select settings/developer options"
+    		echo "Then enable the flags:"
+    		echo "  QUICK_SWITCH and SWIPE_HOME"
+   		echo "Press apply and you're good"
+		echo "If you can't find developer options, re-run the installer"
+		sleep 2
+		echo "Taking you to menu..."
+		sleep 3
+		main
+		;;
 	  *reset*)
 		settings put global quickstepcontroller_hideback 0
 		settings delete global quickstepcontroller_gesture_match_map
@@ -126,7 +139,7 @@ navbar () {
 		;;
 	  *home*)
 		echo "Going back to menu..."
-		sleep 3
+		sleep 1
 		main
 		;;
 	  *)
