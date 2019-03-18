@@ -1,7 +1,7 @@
 id=qmod
 name=Android Q modifications
-version=v1.3
-versionCode=3
+version=v1.4
+versionCode=4
 author=kingbri
 description=Enables certain features on android Q
 minMagisk=18000
