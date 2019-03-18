@@ -11,8 +11,8 @@ More information is in the script itself
 ## Compatibility
 * Android Q+
 
-## To download the script (non-root)
-	curl https://raw.githubusercontent.com/bdashore3/q_tweaks/q_master/system/bin/qmod > ~/sdcard/qmod
+## To download the script (non-root, in a terminal)
+	curl https://raw.githubusercontent.com/bdashore3/q_tweaks/q_master/system/bin/qmod > /sdcard/qmod
 
 ## To execute the script
 Root: Just type qmod in a terminal (preferably su)
