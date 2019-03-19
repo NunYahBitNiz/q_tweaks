@@ -1,13 +1,14 @@
 #!/system/bin/sh
 
-#Qmod tweaks (c) kingbri. Enables hidden Android Q settings for people who are on Android Q. This does not enable Q settings for P users
-#Non-root: push this script to your sdcard. Enter a PC adb shell. cd to sdcard. Chmod 0775 /sdcard/qmod. Type "sh qmod"
-#Root: Install the magisk module. Open your terminal client. Type su. Type qmod
+# Qmod tweaks (c) kingbri. Enables hidden Android Q settings for people who are on Android Q. This does not enable Q settings for P users
+# Non-root: push this script to your sdcard. Enter a PC adb shell. cd to sdcard. Chmod 0775 /sdcard/qmod. Type "sh qmod"
+# Root: Install the magisk module. Open your terminal client. Type su. Type qmod
 
-#Functions (This script is function based)
+# Functions (This script is function based)
 
-#Enable dark theming
+# Enable dark theming
 darkmode () {
+	FNC=darkmode
 	clear
 	echo "*********************************************"
 	echo "Android Q's darkmode is hidden..."
@@ -34,15 +35,11 @@ darkmode () {
 			setprop debug.hwui.force_dark true
 			echo "Done. Please reboot"
 			sleep 2
-			echo "Returning to main menu..."
-		  	sleep 3
-			main
+			backtomenu
 			;;
 		  *)
 			echo "Not applying"
-			echo "Returning to main menu..."
-			sleep 3
-			main
+			backtomenu
 			;;
 		esac
 		;;
@@ -50,21 +47,17 @@ darkmode () {
 		settings put secure ui_night_mode 1
 		echo "Disabled dark theming"
 		echo "Please reboot in menu"
-		echo "Taking you to menu..."
-		sleep 3
-		main
+		backtomenu
 		;;
 	  *3*)
 		settings put secure ui_night_mode 0
 		echo "Set dark theme to change for time of day"
 		echo "Please reboot in menu"
-		echo "Taking you to menu..."
-		sleep 3
-		main
+		backtomenu
 		;;
 	  *home*)
 		echo "Going back to menu..."
-		sleep 3
+		sleep 1
 		main
 		;;
 	  *)
@@ -74,19 +67,21 @@ darkmode () {
 	esac
 }
 
-#Navbar Options
+# Navbar Options
 navbar () {
+	FNC=navbar
 	clear
 	echo "*********************************************"
 	echo "Android Q has new navigation gestures..."
 	echo "iphone style gestures were chosen during installation"
 	echo "If you enabled them, don't do anything here"
 	echo " "
-	echo "Choices: [1, 2, 3, reset]"
+	echo "Choices: [1, 2, 3, 4, reset]"
 	echo " "
-	echo "1. Removes back button, but uses pie quickswitching"
-	echo "2. Removes back button and uses Q quickswitching"
-	echo "3. Gives information about iphone-like gestures"
+	echo "1. Remove back button"
+	echo "2. Enables pie quickswitching"
+	echo "3. Enables Q quickswitching"
+	echo "4. Gives information about iphone-like gestures"
 	echo "reset: reset to default"
 	echo " "
 	echo "type home to go back to the menu"
@@ -95,28 +90,30 @@ navbar () {
 	echo "********************************************"
 	case "$NAV_INPUT" in 
 	  *1*)
-		echo "Removing back button, but keeping pie quick switching"
+		echo "Removing back button..."
 		sleep 1
 		settings put global quickstepcontroller_hideback 1
-		settings put global quickstepcontroller_gesture_match_map 173255
 		echo "Enabled new back gesture with Pie recent switcher"
 		echo "Please reboot in menu"
-		echo "Taking you to menu..."
-		sleep 3
-		main
+		backtomenu
 		;;
 	  *2*)
-		echo "Removing back button and changing to Q quick switching"
+		echo "Preserving Pie quickswitching..."
 		sleep 1
-		settings put global quickstepcontroller_hideback 1
 		settings put global quickstepcontroller_gesture_match_map 173155
 		echo "Enabled new back gesture with Q recent switcher"
 		echo "Please reboot in menu"
-		echo "Taking you to menu..."
-		sleep 3
-		main
+		backtomenu
 		;;
 	  *3*)
+		echo "Switching to Q quickswitching..."
+		sleep 1
+		settings put global quickstepcontroller_gesture_match_map 173155
+		echo "Enabled new back gesture with Q recent switcher"
+		echo "Please reboot in menu"
+		backtomenu
+		;;
+	  *4*)
    		echo "To enable the iphone-like gestures:"
 		echo "long-press on home screen and"
     		echo "select settings/developer options"
@@ -125,9 +122,7 @@ navbar () {
    		echo "Press apply and you're good"
 		echo "If you can't find developer options, re-run the installer"
 		sleep 2
-		echo "Taking you to menu..."
-		sleep 3
-		main
+		backtomenu
 		;;
 	  *reset*)
 		settings put global quickstepcontroller_hideback 0
@@ -150,8 +145,9 @@ navbar () {
 	esac
 }
 
-#Lockscreen Clock options
+# Lockscreen Clock options
 lockclock () {
+	FNC=lockclock
 	clear
 	echo "*********************************************"
 	echo "Android Q has new Lockscreen Clocks..."
@@ -171,25 +167,19 @@ lockclock () {
 		settings put secure lock_screen_custom_clock_face "com.android.keyguard.clock.BubbleClockController"
 		echo "Enabled bubble clock"
 		echo "Please reboot in menu"
-		echo "Taking you to menu..."
-		sleep 3
-		main
+		backtomenu
 		;;
 	  *2*)
 		settings put secure lock_screen_custom_clock_face "com.android.keyguard.clock.StretchAnalogClockController"
 		echo "Enabled analog clock"
 		echo "Please reboot in menu"
-		echo "Taking you to menu..."
-		sleep 3
-		main
+		backtomenu
 		;;
 	  *3*)
 		settings put secure lock_screen_custom_clock_face "com.android.keyguard.clock.TypeClockController"
 		echo "Enabled word clock"
 		echo "Please reboot in menu"
-		echo "Taking you to menu..."
-		sleep 3
-		main
+		backtomenu
 		;;
 	  *reset*)
 		settings delete secure lock_screen_custom_clock_face
@@ -201,7 +191,7 @@ lockclock () {
 		;;
 	  *home*)
 		echo "Going back to menu..."
-		sleep 3
+		sleep 1
 		main
 		;;
 	  *)
@@ -211,8 +201,9 @@ lockclock () {
 	esac
 }
 
-#Movable windows (On Pixel Launcher only)
+# Movable windows (On Pixel Launcher only)
 desktop () {
+	FNC=desktop
 	clear
 	echo "*********************************************"
 	echo "Android Q has a desktop mode..."
@@ -230,9 +221,7 @@ desktop () {
 	  *1*)
 		am start -n "com.google.android.apps.nexuslauncher/com.android.launcher3.SecondaryDisplayLauncher"
 		echo "Enabled. Please relaunch your launcher."
-		echo "Taking you to menu..."
-		sleep 3
-		main
+		backtomenu
 		;;
 	  *home*)
 		echo "Going back to menu..."
@@ -246,8 +235,9 @@ desktop () {
 	esac
 }
 
-#Chat bubbles
+# Chat bubbles
 bubbs() {
+	FNC=bubbs
 	clear
 	echo "*********************************************"
 	echo "Android Q has movable chat bubbles..."
@@ -265,16 +255,17 @@ bubbs() {
 		settings put secure experiment_enable_bubbles 1
 		settings put secure experiment_autobubble_all 1
 		echo "Enabled bubbles. Please reboot."
-		echo "Taking you to menu..."
-		sleep 3
-		main
+		backtomenu
 		;;
 	  *reset*)
 		settings delete secure experiment_enable_bubbles
 		settings delete secure experiment_autobubble_all
 		echo "Reset to default. Please reboot."
-		echo "Taking you to menu..."
-		sleep 3
+		backtomenu
+		;;
+	  *home*)
+		echo "Going back to menu..."
+		sleep 1
 		main
 		;;
 	  *)
@@ -282,8 +273,27 @@ bubbs() {
 		bubbs
 	esac
 }
+
+# Checks if the user wants to do anything else
+backtomenu() {
+	echo "Would you like to do anything else?"
+	echo "Options [1, 2]"
+	echo "1. Yes"
+	echo "2. No"
+	read INPUT_CHOICE
+	case "$INPUT_CHOICE" in
+	  *1*)
+		$FNC
+		;;
+	  *2*)
+		echo "Taking you to menu..."
+		sleep 3
+		main
+		;;
+	esac
+}
 			
-#Main menu
+# Main menu
 main () {
 	echo "**********************************************"
 	echo       "Android Q extra tweaks"
